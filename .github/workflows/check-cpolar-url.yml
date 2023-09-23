@@ -8,6 +8,11 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest	# access from github ip (us)
+    
+    env:
+      CPOLAR_ACCOUNT: ${{ secrets.CPOLAR_ACCOUNT }}
+      CPOLAR_PASSWORD:  ${{ secrets.CPOLAR_PASSWORD }}
+      
     steps:
 
       - name: checkout scripts repo
@@ -29,5 +34,5 @@ jobs:
       - name: commit and push data repo
         uses: longavailable/simple-push-action@longavailable
         with:
-          token: ${{ secrets.HYDRODATA_TOKEN }}
+          token: ${{ secrets.CPOLAR_TOKEN }}
           message: "Update cpolar url from Action `date`"
