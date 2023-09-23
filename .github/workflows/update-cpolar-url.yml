@@ -1,0 +1,33 @@
+name: Update cpolar url for personal homeassistant domain
+
+on:
+  workflow_dispatch:
+  push:   # only if 'cpolar-tunnel-url.csv' file changes
+    paths:
+      - cpolar-tunnel-url.csv
+
+jobs: 
+  update:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout current repo
+        uses: actions/checkout@v3
+        
+      - name: checkout longavailable/longavailable.github.io repo
+        uses: actions/checkout@v3
+        with: 
+          repository: longavailable/longavailable.github.io
+          token: ${{ secrets.CPOLAR_TOKEN }}
+          path: site
+      
+      - name: update page
+        run: perl -pi -e 's/(?<=http:\/\/).*(?=\n)'/"$(cat cpolar-tunnel-url.csv)"/ site/myCollections/_redirects/homeassistant.md
+
+      - name: commit and push site repo
+        uses: longavailable/simple-push-action@longavailable
+        with:
+          repository: longavailable/longavailable.github.io
+          token: ${{ secrets.CPOLAR_TOKEN }}
+          path: site
+          message: "Update Cpolar url from Action `date`"
