@@ -1,0 +1,33 @@
+name: check cpolar url schedulely
+
+on:
+  workflow_dispatch:	
+  schedule:
+    - cron: '8 * * * *'
+    
+jobs:
+  check:
+    runs-on: ubuntu-latest	# access from github ip (us)
+    steps:
+
+      - name: checkout scripts repo
+        uses: actions/checkout@v3
+          
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U -r requirements.txt
+
+      - name: execute python script
+        run: python get-cpolar-tunnel.py
+
+      - name: commit and push data repo
+        uses: longavailable/simple-push-action@longavailable
+        with:
+          token: ${{ secrets.HYDRODATA_TOKEN }}
+          message: "Update cpolar url from Action `date`"
