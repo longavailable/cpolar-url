@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:   # only if 'cpolar-tunnel-url.csv' file changes
     paths:
-      - cpolar-tunnel-url.csv
+      - 'cpolar-tunnel-url.csv'
 
 jobs: 
   update:
