@@ -5,6 +5,10 @@ on:
   push:   # only if 'cpolar-tunnel-url.csv' file changes
     paths:
       - 'cpolar-tunnel-url.csv'
+  workflow_run:
+    workflows: ['check cpolar url schedulely']
+    types:
+      - completed
 
 jobs: 
   update:
