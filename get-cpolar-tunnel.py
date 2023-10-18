@@ -72,9 +72,13 @@ if page.ok:
 			token_value = token_element["value"]
 			'''
 			table = soup.find('table')
-			tunnels = pd.read_html(str(table))[0]
-			
-			target = tunnels[tunnels['本地地址']=='tcp://192.168.31.199:8123'].reset_index().at[0,'URL']
+			try:
+				tunnels = pd.read_html(o.StringIO(table))[0]
+				
+				target = tunnels[tunnels['本地地址']=='tcp://192.168.31.199:8123'].reset_index().at[0,'URL']
+			except:
+				print('There is something wrong. Check the Cpolar connection.')
+				target = None
 			
 			if target != None :
 				url = target.strip('tcp://')
