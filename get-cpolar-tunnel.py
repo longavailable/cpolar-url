@@ -71,10 +71,10 @@ if page.ok:
 			token_element = soup.find(id='logoutForm').find('input')
 			token_value = token_element["value"]
 			'''
-			table = soup.find('table')
+			table = soup.find('table')			
 			try:
-				tunnels = pd.read_html(o.StringIO(table))[0]
-				
+				tunnels = pd.read_html(io.StringIO(table))[0]
+				print(tunnels)
 				target = tunnels[tunnels['本地地址']=='tcp://192.168.31.199:8123'].reset_index().at[0,'URL']
 			except:
 				print('There is something wrong. Check the Cpolar connection.')
