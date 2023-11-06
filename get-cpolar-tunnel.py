@@ -74,7 +74,7 @@ if page.ok:
 			'''
 			table = soup.find('table')			
 			try:
-				tunnels = pd.read_html(io.StringIO(table))[0]
+				tunnels = pd.read_html(io.StringIO(str(table)))[0]
 				print(tunnels)
 				target = tunnels[tunnels['本地地址']=='tcp://192.168.31.199:8123'].reset_index().at[0,'URL']
 			except:
