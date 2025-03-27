@@ -61,7 +61,6 @@ if page.ok:
 		
 		page_tunnels = s.get(url_tunnels)
 		'''
-		test = s.get(url_account)
 		print(page_tunnels.text)
 		'''
 		
