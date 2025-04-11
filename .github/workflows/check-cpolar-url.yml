@@ -1,5 +1,7 @@
 name: check cpolar url schedulely
 
+# updated on 2025/04/11
+
 on:
   workflow_dispatch:	
   schedule:
@@ -8,18 +10,14 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest	# access from github ip (us)
-    
-    env:
-      CPOLAR_ACCOUNT: ${{ secrets.CPOLAR_ACCOUNT }}
-      CPOLAR_PASSWORD:  ${{ secrets.CPOLAR_PASSWORD }}
       
     steps:
 
       - name: checkout scripts repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
           
       - name: setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           
@@ -28,11 +26,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U -r requirements.txt
 
-      - name: execute python script
+      - name: execute python script    
+        env:
+          CPOLAR_ACCOUNT: ${{ secrets.CPOLAR_ACCOUNT }}
+          CPOLAR_PASSWORD:  ${{ secrets.CPOLAR_PASSWORD }}
         run: python get-cpolar-tunnel.py
-
-      - name: commit and push data repo
-        uses: longavailable/simple-push-action@longavailable
-        with:
-          token: ${{ secrets.CPOLAR_TOKEN }}
-          message: "Update cpolar url from Action `date`"
+        
+      - name: move output to a new directory/environment
+        run: |
+          mkdir ../cpolar-tunnel-url
+          mv cpolar-tunnel-url.csv ../cpolar-tunnel-url
+      
+      - name: commit and push
+        env:
+          CPOLAR_TOKEN: ${{ secrets.CPOLAR_TOKEN }}
+        working-directory: ../cpolar-tunnel-url
+        run: |
+          git init
+          git config user.email $GITHUB_ACTOR@users.noreply.github.com
+          git config user.name $GITHUB_ACTOR
+          git add .
+          git commit -m "Update cpolar url from Action `date`"
+          git push --force https://$GITHUB_ACTOR:$CPOLAR_TOKEN@github.com/$GITHUB_REPOSITORY.git master:cpolar-tunnel-url
