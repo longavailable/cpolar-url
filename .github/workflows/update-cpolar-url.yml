@@ -13,6 +13,7 @@ on:
     workflows: ['check cpolar url schedulely']
     types:
       - completed
+    conclusion: success
 
 jobs: 
   update:
