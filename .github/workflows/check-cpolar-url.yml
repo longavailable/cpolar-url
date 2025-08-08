@@ -5,7 +5,7 @@ name: check cpolar url schedulely
 on:
   workflow_dispatch:	
   schedule:
-    - cron: '8 * * * *'
+    - cron: '40 7 * * *'  # at 07:40 every day
     
 jobs:
   check:
