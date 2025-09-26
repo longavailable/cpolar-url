@@ -2,7 +2,9 @@ name: Update cpolar url for personal homeassistant domain
 
 # updated on 2025/04/11
 
-on:
+# 用自动重定向代替此workflow的push，此workflow弃用，20250926
+# https://github.com/longavailable/longavailable.github.io/blob/main/myCollections/_redirects/homeassistant.html
+# on:
   workflow_dispatch:
   push:   # only if 'cpolar-tunnel-url.csv' file changes
     branches:
